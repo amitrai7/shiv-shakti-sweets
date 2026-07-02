@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Welcome to Shiv Shakti Sweets - taste the purity of authentic Indian sweets. Handmade with 100% pure ghee, premium ingredients, and generations of love. Order online for pickup or delivery.">
+    <title>Shiv Shakti Sweets | Pure & Authentic Indian Sweets</title>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- CSS Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header & Navigation -->
+    <header class="header" id="header">
+        <nav class="navbar">
+            <a href="#home" class="logo" id="logo">
+                <div>
+                    <span class="logo-text">Shiv Shakti</span>
+                    <span class="logo-tag">Sweets & Savouries</span>
+                </div>
+            </a>
+            
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="#home" class="nav-link active" id="nav-home">Home</a></li>
+                <li><a href="#menu" class="nav-link" id="nav-menu-link">Our Sweets</a></li>
+                <li><a href="#about" class="nav-link" id="nav-about">About Us</a></li>
+                <li><a href="#contact" class="nav-link" id="nav-contact">Contact</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <button class="cart-icon-btn" id="cart-btn" aria-label="Open Shopping Cart">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span class="cart-badge" id="cart-badge">0</span>
+                </button>
+                <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Navigation Menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <span class="hero-subtitle">Est. 1984</span>
+            <h1 class="hero-title">Indulge in the Purity of <span>Tradition</span></h1>
+            <p class="hero-description">Experience the rich heritage of handcrafted Indian sweets. Made with 100% pure desi ghee, premium ingredients, and generations of family recipes.</p>
+            <div class="hero-buttons">
+                <a href="#menu" class="btn btn-primary" id="hero-order-btn">Explore Sweets</a>
+                <a href="#about" class="btn btn-secondary" id="hero-story-btn">Our Story</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shop / Menu Section -->
+    <section class="shop-section" id="menu">
+        <div class="section-header">
+            <span class="section-tag">Sweet Indulgences</span>
+            <h2 class="section-title">Explore Our Menu</h2>
+            <div class="section-divider"></div>
+        </div>
+
+        <div class="shop-controls">
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" class="search-input" id="search-input" placeholder="Search for your favorite sweets...">
+            </div>
+
+            <!-- Categories Pills -->
+            <div class="category-filters" id="category-filters">
+                <button class="filter-btn active" data-category="all" id="filter-all">All Sweets</button>
+                <button class="filter-btn" data-category="ladoo" id="filter-ladoo">Ladoos</button>
+                <button class="filter-btn" data-category="bengali" id="filter-bengali">Bengali Sweets</button>
+                <button class="filter-btn" data-category="peda-barfi" id="filter-peda-barfi">Pedas & Barfis</button>
+                <button class="filter-btn" data-category="dryfruit" id="filter-dryfruit">Dry Fruit Special</button>
+            </div>
+        </div>
+
+        <!-- Shop Layout: Grid + Side Preview -->
+        <div class="shop-layout" id="shop-layout">
+            <!-- Products Grid -->
+            <div class="products-grid" id="products-grid">
+                <!-- Dynamic products loaded here by app.js -->
+            </div>
+
+            <!-- Product Preview Pane (Side Preview / Mobile Drawer) -->
+            <div class="product-preview-pane" id="product-preview-pane">
+                <!-- Dynamically loaded by app.js -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Preview Overlay for Mobile -->
+    <div class="preview-overlay" id="preview-overlay"></div>
+
+    <!-- Shopping Cart Drawer Overlay -->
+    <div class="cart-overlay" id="cart-overlay"></div>
+
+    <!-- Shopping Cart Drawer -->
+    <div class="cart-drawer" id="cart-drawer">
+        <div class="cart-header">
+            <h3 class="cart-title">Your Order Bag</h3>
+            <button class="close-cart-btn" id="close-cart" aria-label="Close Cart">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <!-- Cart Items Container -->
+        <div class="cart-items" id="cart-items">
+            <!-- Dynamically populated or empty message -->
+        </div>
+
+        <!-- Cart Footer -->
+        <div class="cart-footer">
+            <div class="cart-total-row">
+                <span>Estimated Total:</span>
+                <span id="cart-total">₹0</span>
+            </div>
+            <button class="cart-checkout-btn" id="checkout-btn">
+                <i class="fa-brands fa-whatsapp"></i> Order via WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <!-- About Us Section -->
+    <section class="about-section" id="about">
+        <div class="about-container">
+            <div class="about-images">
+                <div class="about-img-box">
+                    <img src="assets/gulab-jamun.jpg" alt="Soft Juicy Gulab Jamun" loading="lazy">
+                </div>
+                <div class="about-img-box">
+                    <img src="assets/motichoor.jpg" alt="Fresh Motichoor Ladoo Stack" loading="lazy">
+                </div>
+            </div>
+            
+            <div class="about-content">
+                <span class="section-tag">Our Heritage</span>
+                <h2 class="about-title">About Shiv Shakti Sweets</h2>
+                <p class="about-subtitle">Purity, Quality, and Tradition since 1984.</p>
+                <p class="about-text">
+                    For over four decades, Shiv Shakti Sweets has been sweetening your celebrations and daily moments. Our journey started in a small kitchen with a promise—to never compromise on the quality and purity of what we offer. 
+                </p>
+                <p class="about-text">
+                    Every batch of our sweets is crafted by skilled Halwais (traditional confectioners) using traditional techniques, 100% pure milk fat (Desi Ghee), and fresh premium dry fruits. No artificial preservatives or flavor enhancers find a place in our kitchens.
+                </p>
+                
+                <div class="about-features">
+                    <div class="feature-item">
+                        <div class="feature-icon-wrapper">
+                            <i class="fa-solid fa-cow"></i>
+                        </div>
+                        <div class="feature-info">
+                            <h4>100% Desi Ghee</h4>
+                            <p>Rich taste and premium texture in every bite.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon-wrapper">
+                            <i class="fa-solid fa-leaf"></i>
+                        </div>
+                        <div class="feature-info">
+                            <h4>No Preservatives</h4>
+                            <p>Freshly prepared daily with completely natural ingredients.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon-wrapper">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        </div>
+                        <div class="feature-info">
+                            <h4>Generational Recipes</h4>
+                            <p>Time-tested methods passed down through families.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon-wrapper">
+                            <i class="fa-solid fa-certificate"></i>
+                        </div>
+                        <div class="feature-info">
+                            <h4>Purity Certified</h4>
+                            <p>Strict quality controls ensuring safe and delicious sweets.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Location Section -->
+    <section class="contact-section" id="contact">
+        <div class="section-header">
+            <span class="section-tag">Get in Touch</span>
+            <h2 class="section-title">Visit Our Shop</h2>
+            <div class="section-divider"></div>
+        </div>
+
+        <div class="contact-grid">
+            <div class="contact-info-panel">
+                <p class="contact-lead">Have questions or want to place a custom bulk order for festivals, weddings, or corporate events? Reach out or visit us directly!</p>
+                
+                <div class="contact-details">
+                    <div class="contact-detail-item">
+                        <div class="contact-detail-icon">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                        <div class="contact-info-box">
+                            <h4 class="contact-detail-title">Address</h4>
+                            <p class="contact-detail-text">Shop No. 12, Shiv Shakti Arcade, Sector 4, Kopar Khairane, Navi Mumbai, Maharashtra 400709</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-detail-item">
+                        <div class="contact-detail-icon">
+                            <i class="fa-solid fa-phone"></i>
+                        </div>
+                        <div class="contact-info-box">
+                            <h4 class="contact-detail-title">Call Us</h4>
+                            <p class="contact-detail-text">+91 98765 43210 / +91 22 2754 0099</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-detail-item">
+                        <div class="contact-detail-icon">
+                            <i class="fa-solid fa-envelope"></i>
+                        </div>
+                        <div class="contact-info-box">
+                            <h4 class="contact-detail-title">Email Us</h4>
+                            <p class="contact-detail-text">info@shivshaktisweets.com</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="opening-hours-card">
+                    <h4 class="hours-title"><i class="fa-regular fa-clock"></i> Opening Hours</h4>
+                    <div class="hours-list">
+                        <div class="hours-row">
+                            <span>Monday - Saturday</span>
+                            <span>8:00 AM - 10:00 PM</span>
+                        </div>
+                        <div class="hours-row highlight">
+                            <span>Sunday & Holidays</span>
+                            <span>7:30 AM - 10:30 PM</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map View Placeholder with a beautiful look -->
+            <div class="map-container">
+                <div class="map-placeholder">
+                    <i class="fa-solid fa-map-location-dot map-icon"></i>
+                    <h3 style="font-family: var(--font-serif); margin-bottom: 10px;">Find Us on Google Maps</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; max-width: 300px; margin-bottom: 15px;">We are centrally located in Navi Mumbai, easily accessible by road and train.</p>
+                    <a href="https://maps.google.com/?q=Shiv+Shakti+Sweets+Kopar+Khairane" target="_blank" rel="noopener noreferrer" class="btn btn-primary map-btn" id="map-direction-btn">Get Directions</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <span class="logo-text">Shiv Shakti</span>
+                <span class="logo-tag">Sweets & Savouries</span>
+                <p class="footer-desc">Crafting pure moments of joy since 1984. Traditional Indian sweets prepared with love and uncompromising hygiene standards.</p>
+                <div class="footer-socials">
+                    <a href="#" class="social-icon-btn" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon-btn" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="social-icon-btn" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-links">
+                <h4 class="footer-links-title">Quick Links</h4>
+                <ul class="footer-links-list">
+                    <li><a href="#home" class="footer-link">Home</a></li>
+                    <li><a href="#menu" class="footer-link">Our Sweets</a></li>
+                    <li><a href="#about" class="footer-link">Our Story</a></li>
+                    <li><a href="#contact" class="footer-link">Contact & Location</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h4 class="footer-links-title">Special Offerings</h4>
+                <ul class="footer-links-list">
+                    <li><a href="#menu" class="footer-link">Wedding Gift Packs</a></li>
+                    <li><a href="#menu" class="footer-link">Festival Hampers</a></li>
+                    <li><a href="#menu" class="footer-link">Custom Assortment Boxes</a></li>
+                    <li><a href="#menu" class="footer-link">Catering Services</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 Shiv Shakti Sweets. All Rights Reserved.</p>
+            <p>Designed with ❤️ for traditional taste.</p>
+        </div>
+    </footer>
+
+    <!-- App Logic -->
+    <script src="app.js"></script>
+</body>
+</html>
