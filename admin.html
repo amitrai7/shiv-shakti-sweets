@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owner Portal | Shiv Shakti Sweets</title>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body style="background: var(--light-bg); min-height: 100vh; display: flex; flex-direction: column;">
+
+    <!-- Admin Header -->
+    <header class="header scrolled" style="position: static; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+        <nav class="navbar" style="max-width: 1200px; margin: 0 auto; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 15px 20px;">
+            <a href="index.html" class="logo">
+                <div>
+                    <span class="logo-text">Shiv Shakti</span>
+                    <span class="logo-tag">Sweets</span>
+                </div>
+            </a>
+            <a href="index.html" class="btn btn-secondary" style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-size: 0.85rem; padding: 8px 16px;">
+                <i class="fa-solid fa-arrow-left-long" style="margin-right: 5px;"></i> Storefront
+            </a>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 20px; max-width: 1200px; width: 100%; margin: 0 auto;">
+        
+        <!-- LOGIN VIEW (Centered Card) -->
+        <div id="admin-login-view" style="width: 100%; max-width: 450px; background: var(--light-card); border-radius: var(--radius-lg); border: 1px solid rgba(239, 233, 222, 0.8); box-shadow: var(--shadow-lg); padding: 40px 30px; text-align: center;">
+            <div style="margin-bottom: 25px;">
+                <div style="width: 60px; height: 60px; border-radius: 50%; background: #FFF5F2; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px;">
+                    <i class="fa-solid fa-store" style="color: var(--primary); font-size: 1.8rem;"></i>
+                </div>
+                <h2 style="font-family: var(--font-serif); color: var(--text-dark); font-size: 1.6rem; margin-bottom: 5px;">Owner Portal</h2>
+                <p style="color: var(--text-muted); font-size: 0.85rem;">Authenticate to manage your sweet shop's menu items</p>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 8px; text-align: left; margin-bottom: 20px;">
+                <label for="admin-password" style="font-size: 0.85rem; font-weight: 600; color: var(--text-dark);">Enter Password</label>
+                <input type="password" id="admin-password" style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-size: 0.95rem; outline: none; transition: var(--transition);" placeholder="Enter password (default: shivshakti84)">
+            </div>
+            
+            <div id="login-error-msg" style="color: var(--accent-red); font-size: 0.85rem; margin-bottom: 15px; font-weight: 500; min-height: 20px; text-align: left;"></div>
+            
+            <button class="btn btn-primary" id="admin-login-submit" style="width: 100%; border-radius: var(--radius-sm); padding: 12px;">
+                Access Dashboard
+            </button>
+        </div>
+
+        <!-- DASHBOARD VIEW (Sidebar + Content Panel) -->
+        <div id="admin-dashboard-view" style="display: none; width: 100%; display: none; grid-template-columns: 250px 1fr; gap: 30px; align-items: start;">
+            
+            <!-- Dashboard Sidebar -->
+            <div style="background: var(--light-card); border-radius: var(--radius-md); border: 1px solid var(--border-color); padding: 20px; display: flex; flex-direction: column; gap: 10px;">
+                <div style="padding-bottom: 15px; border-bottom: 1px solid var(--border-color); margin-bottom: 10px;">
+                    <span style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Navigation</span>
+                </div>
+                <button class="admin-tab-btn active" data-tab="add-sweet" id="tab-add-btn" style="display: flex; align-items: center; gap: 10px; text-align: left; width: 100%; padding: 10px 15px; border-radius: var(--radius-sm); font-size: 0.9rem; font-weight: 600; cursor: pointer; border: none; background: none; transition: var(--transition);">
+                    <i class="fa-solid fa-plus-circle"></i> Add / Edit Sweet
+                </button>
+                <button class="admin-tab-btn" data-tab="manage-sweets" id="tab-manage-btn" style="display: flex; align-items: center; gap: 10px; text-align: left; width: 100%; padding: 10px 15px; border-radius: var(--radius-sm); font-size: 0.9rem; font-weight: 600; cursor: pointer; border: none; background: none; transition: var(--transition);">
+                    <i class="fa-solid fa-sliders"></i> Manage Sweets List
+                </button>
+            </div>
+
+            <!-- Dashboard Content Card -->
+            <div style="background: var(--light-card); border-radius: var(--radius-md); border: 1px solid var(--border-color); box-shadow: 0 4px 12px rgba(0,0,0,0.02); padding: 30px; min-height: 480px;">
+                
+                <!-- Tab Content: Add Sweet -->
+                <div class="admin-tab-content active" id="tab-add-sweet">
+                    <h4 id="form-mode-title" style="font-size: 1.2rem; color: var(--text-dark); margin-bottom: 20px; font-weight: 600; display: flex; align-items: center; gap: 8px; font-family: var(--font-serif);">
+                        <i class="fa-solid fa-circle-plus" style="color: var(--primary);"></i> Add New Sweet
+                    </h4>
+                    <form id="add-sweet-form" onsubmit="event.preventDefault();" style="display: flex; flex-direction: column; gap: 20px;">
+                        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                                <label for="sweet-name" style="font-size: 0.85rem; font-weight: 600; color: var(--text-dark);">Sweet Name *</label>
+                                <input type="text" id="sweet-name" required style="padding: 11px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-size: 0.9rem; outline: none; transition: var(--transition);" placeholder="e.g. Chocolate Peda">
+                            </div>
+                            <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                                <label for="sweet-category" style="font-size: 0.85rem; font-weight: 600; color: var(--text-dark);">Category *</label>
+                                <select id="sweet-category" required style="padding: 11px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-size: 0.9rem; outline: none; background: white; transition: var(--transition);">
+                                    <option value="peda-barfi">Pedas & Barfis</option>
+                                    <option value="ladoo">Ladoos</option>
+                                    <option value="bengali">Bengali Sweets</option>
+                                    <option value="dryfruit">Dry Fruit Special</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                                <label for="sweet-price" style="font-size: 0.85rem; font-weight: 600; color: var(--text-dark);">Price (₹ per kg) *</label>
+                                <input type="number" id="sweet-price" min="0" required style="padding: 11px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-size: 0.9rem; outline: none; transition: var(--transition);" placeholder="e.g. 320">
+                            </div>
+                            <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                                <label for="sweet-badge" style="font-size: 0.85rem; font-weight: 600; color: var(--text-dark);">Badge (Optional)</label>
+                                <input type="text" id="sweet-badge" style="padding: 11px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-size: 0.9rem; outline: none; transition: var(--transition);" placeholder="e.g. New Launch">
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                            <label for="sweet-desc" style="font-size: 0.85rem; font-weight: 600; color: var(--text-dark);">Description *</label>
+                            <textarea id="sweet-desc" required rows="4" style="padding: 11px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-size: 0.9rem; outline: none; resize: vertical; font-family: var(--font-sans); transition: var(--transition);" placeholder="Describe the sweet's preparation, ingredients, or freshness..."></textarea>
+                        </div>
+
+                        <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                            <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-dark);">Sweet Image (Optional)</label>
+                            <div class="file-upload-wrapper" style="display: flex; align-items: center; gap: 12px; background: var(--light-bg); padding: 15px; border-radius: var(--radius-sm); border: 1px dashed var(--border-color);">
+                                <input type="file" id="sweet-image" accept="image/*" style="display: none;">
+                                <button type="button" class="btn btn-secondary" onclick="document.getElementById('sweet-image').click()" style="padding: 8px 16px; font-size: 0.8rem; border: 1px solid var(--border-color); border-radius: var(--radius-sm); background: white;">
+                                    <i class="fa-solid fa-image" style="margin-right: 5px;"></i> Upload Image File
+                                </button>
+                                <span id="file-name-display" style="font-size: 0.75rem; color: var(--text-muted); text-overflow: ellipsis; white-space: nowrap; overflow: hidden; max-width: 250px;">No file chosen</span>
+                            </div>
+                        </div>
+
+                        <div class="form-actions-row" style="display: flex; gap: 12px; margin-top: 10px;">
+                            <button type="submit" class="btn btn-primary" id="save-sweet-btn" style="flex: 2; border-radius: var(--radius-sm); padding: 11px;">
+                                <i class="fa-solid fa-circle-check" style="margin-right: 5px;"></i> Save Sweet to Menu
+                            </button>
+                            <button type="button" class="btn btn-secondary" id="cancel-edit-btn" style="flex: 1; display: none; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--light-bg); color: var(--text-dark);">
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Tab Content: Manage Sweets -->
+                <div class="admin-tab-content" id="tab-manage-sweets" style="display: none;">
+                    <h4 style="font-size: 1.2rem; color: var(--text-dark); margin-bottom: 20px; font-weight: 600; display: flex; align-items: center; gap: 8px; font-family: var(--font-serif);">
+                        <i class="fa-solid fa-sliders" style="color: var(--primary);"></i> Manage Sweets List
+                    </h4>
+                    <div class="admin-sweets-list" id="admin-sweets-list" style="display: flex; flex-direction: column; gap: 12px; max-height: 500px; overflow-y: auto; padding-right: 8px; margin-bottom: 25px;">
+                        <!-- Dynamically loaded list of sweets -->
+                    </div>
+                    <div class="admin-reset-wrapper" style="border-top: 1px solid var(--border-color); padding-top: 20px; display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 0.75rem; color: var(--text-muted);"><i class="fa-solid fa-circle-info" style="margin-right: 4px;"></i> Custom edits persist on this browser.</span>
+                        <button type="button" class="btn btn-danger" id="reset-menu-btn" style="font-size: 0.8rem; padding: 9px 18px; border-radius: var(--radius-sm); background: var(--accent-red); color: white; border: none; cursor: pointer;">
+                            <i class="fa-solid fa-rotate-left" style="margin-right: 5px;"></i> Reset Menu to Default
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Admin Footer -->
+    <footer style="background: var(--text-dark); color: #8F817B; text-align: center; padding: 20px; font-size: 0.8rem; border-top: 1px solid rgba(255,255,255,0.05);">
+        <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
+            <p>&copy; 2026 Shiv Shakti Sweets. Owner Dashboard Panel.</p>
+            <p>Designed with ❤️ for traditional taste.</p>
+        </div>
+    </footer>
+
+    <!-- Admin JS Logic -->
+    <script src="admin.js"></script>
+</body>
+
+</html>

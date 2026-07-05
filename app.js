@@ -2,6 +2,230 @@
 const PRODUCTS = [
     {
         id: 1,
+        title: "Kesar Peda",
+        category: "peda-barfi",
+        price: 350,
+        unit: "kg",
+        description: "Thickened milk solid fudge flavored with rich Kashmiri saffron (kesar) and topped with a slice of pistachio. Perfect for festivals.",
+        image: "assets/kaju-katli.jpg",
+        badge: "Festive Pick",
+        rating: 4.8,
+        reviews: 135,
+        ingredients: ["Fresh Milk Khoya", "Sugar", "Kashmiri Saffron (Kesar)", "Pistachio Garnish"],
+        dietary: ["100% Vegetarian", "Contains Dairy", "Contains Nuts"],
+        shelfLife: "8 Days (Keep refrigerated)",
+        nutrition: { calories: "315 kcal", fat: "15g", sugar: "36g" }
+    },
+    {
+        id: 2,
+        title: "Mawa Barfi",
+        category: "peda-barfi",
+        price: 350,
+        unit: "kg",
+        description: "Classic milk fudge barfi cooked with fresh mawa/khoya, sweetened to perfection, and garnished with cardamom powder.",
+        image: "assets/kaju-katli.jpg",
+        badge: "Classic",
+        rating: 4.7,
+        reviews: 95,
+        ingredients: ["Fresh Khoya", "Sugar", "Cardamom Powder"],
+        dietary: ["100% Vegetarian", "Contains Dairy"],
+        shelfLife: "7 Days (Refrigerate)",
+        nutrition: { calories: "340 kcal", fat: "12g", sugar: "30g" }
+    },
+    {
+        id: 3,
+        title: "Chocolate Peda",
+        category: "peda-barfi",
+        price: 320,
+        unit: "kg",
+        description: "Unique combination of rich cocoa and traditional milk fudge, rolled into smooth round pedas that kids and adults love alike.",
+        image: "assets/kaju-katli.jpg",
+        badge: "Kids Favorite",
+        rating: 4.8,
+        reviews: 120,
+        ingredients: ["Fresh Milk Solids", "Cocoa Powder", "Sugar", "Ghee"],
+        dietary: ["100% Vegetarian", "Contains Dairy"],
+        shelfLife: "8 Days (Keep refrigerated)",
+        nutrition: { calories: "330 kcal", fat: "13g", sugar: "35g" }
+    },
+    {
+        id: 4,
+        title: "Cham Cham",
+        category: "bengali",
+        price: 360,
+        unit: "kg",
+        description: "Traditional Bengali sweet made from fresh paneer (chenna), cooked in sugar syrup, shaped oval, and coated with desiccated coconut.",
+        image: "assets/rasgulla.jpg",
+        badge: "Traditional",
+        rating: 4.8,
+        reviews: 140,
+        ingredients: ["Chhena (Cottage Cheese)", "Sugar Syrup", "Desiccated Coconut", "Food Color"],
+        dietary: ["100% Vegetarian", "Contains Dairy"],
+        shelfLife: "4 Days (Keep refrigerated)",
+        nutrition: { calories: "310 kcal", fat: "10g", sugar: "42g" }
+    },
+    {
+        id: 5,
+        title: "Angoor Rabdi",
+        category: "bengali",
+        price: 300,
+        unit: "kg",
+        description: "Tiny, spongy cottage cheese grape-sized balls (angoor) floating in a rich, thick, cardamom-infused sweetened condensed milk (rabdi).",
+        image: "assets/rasgulla.jpg",
+        badge: "Rich Flavor",
+        rating: 4.9,
+        reviews: 215,
+        ingredients: ["Milk Solids", "Chhena", "Saffron", "Cardamom", "Pistachio slivers"],
+        dietary: ["100% Vegetarian", "Contains Dairy", "Contains Nuts"],
+        shelfLife: "3 Days (Keep refrigerated)",
+        nutrition: { calories: "280 kcal", fat: "11g", sugar: "32g" }
+    },
+    {
+        id: 6,
+        title: "Rasmalai",
+        category: "bengali",
+        price: 300,
+        unit: "kg",
+        description: "Flattened spongy cottage cheese patties soaked in thickened, sweet saffron milk, garnished with almonds and pistachios.",
+        image: "assets/rasgulla.jpg",
+        badge: "Best Seller",
+        rating: 4.9,
+        reviews: 380,
+        ingredients: ["Chhena", "Condensed Milk", "Saffron (Kesar)", "Almonds", "Pistachios"],
+        dietary: ["100% Vegetarian", "Contains Dairy", "Contains Nuts"],
+        shelfLife: "3 Days (Keep refrigerated)",
+        nutrition: { calories: "290 kcal", fat: "12g", sugar: "34g" }
+    },
+    {
+        id: 7,
+        title: "American Matho",
+        category: "peda-barfi",
+        price: 320,
+        unit: "kg",
+        description: "Rich, creamy strained yogurt dessert (Shrikhand) loaded with mixed dry fruits, chocolate chips, and American nuts.",
+        image: "assets/motichoor.jpg",
+        badge: "Chef Special",
+        rating: 4.8,
+        reviews: 175,
+        ingredients: ["Strained Yogurt (Chakka)", "Sugar", "Mixed Nuts", "Chocolate Chips", "Dry Fruits"],
+        dietary: ["100% Vegetarian", "Contains Dairy", "Contains Nuts"],
+        shelfLife: "10 Days (Keep refrigerated)",
+        nutrition: { calories: "325 kcal", fat: "10g", sugar: "36g" }
+    },
+    {
+        id: 8,
+        title: "Khajur Pak",
+        category: "dryfruit",
+        price: 600,
+        unit: "kg",
+        description: "Healthy sugar-free barfi prepared with premium dates, almonds, cashews, and pistachios bound together with pure desi ghee.",
+        image: "assets/kaju-katli.jpg",
+        badge: "Sugar Free",
+        rating: 4.9,
+        reviews: 150,
+        ingredients: ["Dates (Khajur)", "Almonds", "Cashews", "Pistachios", "Desi Ghee"],
+        dietary: ["100% Vegetarian", "Sugar Free", "Gluten Free", "Contains Nuts"],
+        shelfLife: "30 Days at room temp",
+        nutrition: { calories: "295 kcal", fat: "14g", sugar: "0g (Added)" }
+    },
+    {
+        id: 9,
+        title: "Kaju Mysore Pak",
+        category: "dryfruit",
+        price: 700,
+        unit: "kg",
+        description: "Premium rich fudge made of fine gram flour, rich cashew meal, sugar, and generous amounts of pure desi ghee. Unmatched richness.",
+        image: "assets/kaju-katli.jpg",
+        badge: "Rich Ghee",
+        rating: 4.8,
+        reviews: 185,
+        ingredients: ["Cashew Powder", "Gram Flour", "Pure Desi Ghee", "Sugar"],
+        dietary: ["100% Vegetarian", "Contains Ghee", "Contains Nuts"],
+        shelfLife: "20 Days at room temp",
+        nutrition: { calories: "420 kcal", fat: "26g", sugar: "38g" }
+    },
+    {
+        id: 10,
+        title: "Besan Mysore Pak",
+        category: "peda-barfi",
+        price: 300,
+        unit: "kg",
+        description: "Traditional sweet made of chickpea flour, sugar, and pure ghee. Soft, porous, and crumbles in your mouth.",
+        image: "assets/kaju-katli.jpg",
+        badge: "Traditional",
+        rating: 4.7,
+        reviews: 142,
+        ingredients: ["Chickpea Flour (Besan)", "Pure Ghee", "Sugar"],
+        dietary: ["100% Vegetarian", "Contains Ghee"],
+        shelfLife: "20 Days at room temp",
+        nutrition: { calories: "390 kcal", fat: "22g", sugar: "40g" }
+    },
+    {
+        id: 11,
+        title: "Kalakand",
+        category: "peda-barfi",
+        price: 400,
+        unit: "kg",
+        description: "Moist, soft, granular milk cake flavored with cardamom, cooked with freshly curdled paneer and milk solids.",
+        image: "assets/kaju-katli.jpg",
+        badge: "Fresh",
+        rating: 4.8,
+        reviews: 190,
+        ingredients: ["Paneer", "Milk Solids", "Sugar", "Cardamom"],
+        dietary: ["100% Vegetarian", "Contains Dairy"],
+        shelfLife: "5 Days (Keep refrigerated)",
+        nutrition: { calories: "330 kcal", fat: "14g", sugar: "32g" }
+    },
+    {
+        id: 12,
+        title: "Kala Jamun",
+        category: "bengali",
+        price: 200,
+        unit: "kg",
+        description: "Deep-fried milk solids dumplings, fried to a deep dark color, offering a firm outer layer and soft interior soaked in cardamom sugar syrup.",
+        image: "assets/gulab-jamun.jpg",
+        badge: "Warm Delight",
+        rating: 4.8,
+        reviews: 260,
+        ingredients: ["Khoya", "Paneer", "Sugar Syrup", "Cardamom", "Desi Ghee (frying)"],
+        dietary: ["100% Vegetarian", "Contains Dairy"],
+        shelfLife: "5 Days (Refrigerate)",
+        nutrition: { calories: "325 kcal", fat: "13g", sugar: "42g" }
+    },
+    {
+        id: 13,
+        title: "Besan Ladoo",
+        category: "ladoo",
+        price: 320,
+        unit: "kg",
+        description: "Slow-roasted gram flour (besan) combined with sugar, pure desi ghee, and crunchy almond slivers, rolled into aromatic delicious balls.",
+        image: "assets/motichoor.jpg",
+        badge: "Traditional",
+        rating: 4.8,
+        reviews: 156,
+        ingredients: ["Slow-roasted Gram Flour", "Desi Ghee", "Sugar", "Almond Slivers", "Cardamom Powder"],
+        dietary: ["100% Vegetarian", "Contains Ghee", "Contains Nuts"],
+        shelfLife: "20 Days at room temp",
+        nutrition: { calories: "360 kcal", fat: "20g", sugar: "35g" }
+    },
+    {
+        id: 14,
+        title: "Paneer Jalebi",
+        category: "bengali",
+        price: 350,
+        unit: "kg",
+        description: "Crispy and soft jalebis prepared with fresh paneer (cottage cheese) batter, deep-fried to golden-brown, and soaked in cardamom syrup.",
+        image: "assets/gulab-jamun.jpg",
+        badge: "Chef Special",
+        rating: 4.9,
+        reviews: 310,
+        ingredients: ["Fresh Paneer", "Refined Flour", "Ghee (frying)", "Sugar Syrup"],
+        dietary: ["100% Vegetarian", "Contains Dairy"],
+        shelfLife: "4 Days (Refrigerate)",
+        nutrition: { calories: "335 kcal", fat: "15g", sugar: "38g" }
+    },
+    {
+        id: 15,
         title: "Kaju Katli",
         category: "dryfruit",
         price: 900,
@@ -17,7 +241,7 @@ const PRODUCTS = [
         nutrition: { calories: "389 kcal", fat: "18g", sugar: "32g" }
     },
     {
-        id: 2,
+        id: 16,
         title: "Motichoor Ladoo",
         category: "ladoo",
         price: 420,
@@ -33,7 +257,7 @@ const PRODUCTS = [
         nutrition: { calories: "340 kcal", fat: "22g", sugar: "38g" }
     },
     {
-        id: 3,
+        id: 17,
         title: "Gulab Jamun",
         category: "bengali",
         price: 400,
@@ -49,7 +273,7 @@ const PRODUCTS = [
         nutrition: { calories: "320 kcal", fat: "14g", sugar: "45g" }
     },
     {
-        id: 4,
+        id: 18,
         title: "Rasgulla",
         category: "bengali",
         price: 380,
@@ -65,23 +289,7 @@ const PRODUCTS = [
         nutrition: { calories: "186 kcal", fat: "4g", sugar: "34g" }
     },
     {
-        id: 5,
-        title: "Besan Ladoo",
-        category: "ladoo",
-        price: 460,
-        unit: "kg",
-        description: "Slow-roasted gram flour (besan) combined with sugar, pure desi ghee, and crunchy almond slivers, rolled into aromatic delicious balls.",
-        image: "assets/motichoor.jpg",
-        badge: "Traditional",
-        rating: 4.8,
-        reviews: 156,
-        ingredients: ["Slow-roasted Gram Flour", "Desi Ghee", "Sugar", "Almond Slivers", "Cardamom Powder"],
-        dietary: ["100% Vegetarian", "Contains Ghee", "Contains Nuts"],
-        shelfLife: "20 Days at room temp",
-        nutrition: { calories: "360 kcal", fat: "20g", sugar: "35g" }
-    },
-    {
-        id: 6,
+        id: 19,
         title: "Dry Fruit Special Barfi",
         category: "dryfruit",
         price: 1200,
@@ -97,23 +305,7 @@ const PRODUCTS = [
         nutrition: { calories: "290 kcal", fat: "12g", sugar: "10g (Natural)" }
     },
     {
-        id: 7,
-        title: "Kesar Malai Peda",
-        category: "peda-barfi",
-        price: 600,
-        unit: "kg",
-        description: "Thickened milk solid fudge flavored with rich Kashmiri saffron (kesar) and topped with a slice of pistachio. Perfect for festivals.",
-        image: "assets/kaju-katli.jpg",
-        badge: "Festive Pick",
-        rating: 4.8,
-        reviews: 135,
-        ingredients: ["Fresh Milk Khoya", "Sugar", "Kashmiri Saffron (Kesar)", "Pistachio Garnish"],
-        dietary: ["100% Vegetarian", "Contains Dairy", "Contains Nuts"],
-        shelfLife: "8 Days (Keep refrigerated)",
-        nutrition: { calories: "315 kcal", fat: "15g", sugar: "36g" }
-    },
-    {
-        id: 8,
+        id: 20,
         title: "Classic Milk Cake",
         category: "peda-barfi",
         price: 640,
@@ -136,6 +328,8 @@ let currentCategory = "all";
 let searchQuery = "";
 let selectedProductId = 1; // Default to first product (Kaju Katli)
 let previewWeight = 0.5; // Default weight in preview pane
+let customSweets = []; // Dynamic sweets added by owner
+let defaultOverrides = {}; // Overrides for default sweets (key is ID)
 
 // WhatsApp Config
 const SHOP_PHONE = "919876543210"; // Shop's WhatsApp Number
@@ -162,11 +356,100 @@ const previewOverlay = document.getElementById("preview-overlay");
 // Initialize App
 document.addEventListener("DOMContentLoaded", () => {
     loadCart();
+    loadCustomSweets();
+    loadDefaultOverrides();
     renderProducts();
     renderProductPreview();
     setupEventListeners();
     updateCartUI();
 });
+
+// Load custom sweets from Local Storage
+function loadCustomSweets() {
+    const saved = localStorage.getItem("shiv_shakti_custom_sweets");
+    if (saved) {
+        try {
+            customSweets = JSON.parse(saved);
+        } catch (e) {
+            customSweets = [];
+        }
+    }
+}
+
+// Save custom sweets to Local Storage
+function saveCustomSweets() {
+    localStorage.setItem("shiv_shakti_custom_sweets", JSON.stringify(customSweets));
+}
+
+// Load default overrides from Local Storage
+function loadDefaultOverrides() {
+    const saved = localStorage.getItem("shiv_shakti_default_overrides");
+    if (saved) {
+        try {
+            defaultOverrides = JSON.parse(saved);
+        } catch (e) {
+            defaultOverrides = {};
+        }
+    }
+}
+
+// Save default overrides to Local Storage
+function saveDefaultOverrides() {
+    localStorage.setItem("shiv_shakti_default_overrides", JSON.stringify(defaultOverrides));
+}
+
+// Get menu order (list of IDs) from Local Storage, ensuring it's in sync with current products
+function getMenuOrder(currentIds) {
+    const saved = localStorage.getItem("shiv_shakti_menu_order");
+    let order = [];
+    if (saved) {
+        try {
+            order = JSON.parse(saved);
+        } catch (e) {
+            order = [];
+        }
+    }
+    
+    // Ensure all current IDs exist in the order array
+    let updated = false;
+    currentIds.forEach(id => {
+        if (!order.includes(id)) {
+            order.push(id);
+            updated = true;
+        }
+    });
+    
+    // Remove IDs that are no longer present
+    const validOrder = order.filter(id => currentIds.includes(id));
+    if (validOrder.length !== order.length) {
+        order = validOrder;
+        updated = true;
+    }
+    
+    if (updated || !saved) {
+        localStorage.setItem("shiv_shakti_menu_order", JSON.stringify(order));
+    }
+    return order;
+}
+
+// Merge default products and overrides, filtering out hidden items, sorted by custom menu order
+function getAllProducts() {
+    const mergedDefaults = PRODUCTS.map(product => {
+        if (defaultOverrides[product.id]) {
+            return { ...product, ...defaultOverrides[product.id] };
+        }
+        return product;
+    }).filter(product => !product.hidden);
+    
+    const all = [...mergedDefaults, ...customSweets];
+    const order = getMenuOrder(all.map(p => p.id));
+    
+    return all.sort((a, b) => {
+        const indexA = order.indexOf(a.id);
+        const indexB = order.indexOf(b.id);
+        return indexA - indexB;
+    });
+}
 
 // Load cart from Local Storage
 function loadCart() {
@@ -187,8 +470,9 @@ function saveCart() {
 
 // Render Products Grid
 function renderProducts() {
+    const allProducts = getAllProducts();
     // Filter logic
-    const filtered = PRODUCTS.filter(product => {
+    const filtered = allProducts.filter(product => {
         const matchesCategory = currentCategory === "all" || product.category === currentCategory;
         const matchesSearch = product.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                              product.description.toLowerCase().includes(searchQuery.toLowerCase());
@@ -295,7 +579,7 @@ function updatePreviewQuantityUI(price) {
 
 // Add product to cart with custom weight
 function addProductWithWeight(productId, weight) {
-    const product = PRODUCTS.find(p => p.id === productId);
+    const product = getAllProducts().find(p => p.id === productId);
     if (!product) return;
 
     const existingItem = cart.find(item => item.product.id === productId);
@@ -317,7 +601,8 @@ function addProductWithWeight(productId, weight) {
 
 // Render dynamic preview pane contents
 function renderProductPreview() {
-    const product = PRODUCTS.find(p => p.id === selectedProductId);
+    const allProducts = getAllProducts();
+    const product = allProducts.find(p => p.id === selectedProductId);
     
     if (!product) {
         productPreviewPane.innerHTML = `
@@ -424,7 +709,7 @@ function renderProductPreview() {
 
 // Add Item to Cart
 function addToCart(productId) {
-    const product = PRODUCTS.find(p => p.id === productId);
+    const product = getAllProducts().find(p => p.id === productId);
     if (!product) return;
 
     const existingItem = cart.find(item => item.product.id === productId);
@@ -665,3 +950,5 @@ function setupEventListeners() {
         renderProducts();
     });
 }
+
+

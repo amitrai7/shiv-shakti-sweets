@@ -1033,6 +1033,266 @@ button {
     margin: 0;
 }
 
+/* Owner Portal Modal styling */
+.admin-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    width: 95%;
+    max-width: 550px;
+    background: var(--light-card);
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(239, 233, 222, 0.8);
+    box-shadow: 0 24px 64px rgba(43, 30, 23, 0.25);
+    z-index: 2500;
+    padding: 30px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.admin-modal.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.admin-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(30, 18, 12, 0.65);
+    backdrop-filter: blur(8px);
+    z-index: 2499;
+    opacity: 0;
+    pointer-events: none;
+    transition: var(--transition);
+}
+
+.admin-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.admin-close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 30px;
+    height: 30px;
+    border-radius: var(--radius-round);
+    background: var(--light-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dark);
+    font-size: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.admin-close-btn:hover {
+    background: var(--accent-red);
+    color: var(--text-light);
+}
+
+.admin-tab-btn {
+    border: none;
+    background: none;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 8px 0;
+    color: var(--text-muted);
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.admin-tab-btn:hover {
+    color: var(--primary);
+}
+
+.admin-tab-btn.active {
+    color: var(--primary) !important;
+    border-bottom-color: var(--primary) !important;
+}
+
+/* Custom sweet manager list view */
+.admin-sweet-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--light-bg);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+}
+
+.admin-sweet-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.admin-sweet-thumbnail {
+    width: 40px;
+    height: 40px;
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+.admin-sweet-details h5 {
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin: 0;
+}
+
+.admin-sweet-details span {
+    font-size: 0.8rem;
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.admin-sweet-delete-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-round);
+    background: white;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.admin-sweet-delete-btn:hover {
+    background: #FFEBEE;
+    color: var(--accent-red);
+    border-color: #FFCDD2;
+}
+
+.admin-sweet-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.admin-sweet-edit-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-round);
+    background: white;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.admin-sweet-edit-btn:hover {
+    background: #E8F0FE;
+    color: #1A73E8;
+    border-color: #D2E3FC;
+}
+
+.admin-sweet-badge {
+    font-size: 0.65rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+    margin-left: 8px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.admin-sweet-badge.default {
+    background: #E8F0FE;
+    color: #1A73E8;
+}
+
+.admin-sweet-badge.custom {
+    background: #E6F4EA;
+    color: #137333;
+}
+
+.admin-sweet-move-btn {
+    background: var(--light-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-dark);
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.admin-sweet-move-btn:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.admin-sweet-move-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    background: var(--light-bg) !important;
+    color: var(--text-muted) !important;
+    border-color: var(--border-color) !important;
+}
+
+.admin-error-message {
+    color: var(--accent-red);
+    font-size: 0.85rem;
+    margin-top: 8px;
+    font-weight: 500;
+}
+
+/* Standalone Admin Sidebar Buttons Styling */
+#admin-dashboard-view .admin-tab-btn {
+    border: 1px solid transparent !important;
+    background: transparent !important;
+    width: 100% !important;
+    padding: 12px 18px !important;
+    border-radius: var(--radius-sm) !important;
+    color: var(--text-muted) !important;
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    text-align: left !important;
+    cursor: pointer !important;
+    transition: var(--transition) !important;
+    border-bottom: 1px solid transparent !important;
+}
+
+#admin-dashboard-view .admin-tab-btn:hover {
+    background: var(--light-bg) !important;
+    color: var(--primary) !important;
+}
+
+#admin-dashboard-view .admin-tab-btn.active {
+    background: #FFF5F2 !important;
+    color: var(--primary) !important;
+    border-color: #FFE6E1 !important;
+}
+
 /* Hide Online Cart Features */
 #cart-btn, .cart-drawer, .cart-overlay {
     display: none !important;
@@ -1667,5 +1927,52 @@ button {
     
     .cart-drawer {
         max-width: 100%;
+    }
+}
+
+/* Floating WhatsApp Widget */
+.whatsapp-float-widget {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: #25D366;
+    color: white !important;
+    padding: 12px 20px;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    z-index: 999;
+    transition: var(--transition);
+}
+
+.whatsapp-float-widget i {
+    font-size: 1.3rem;
+}
+
+.whatsapp-float-widget:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+    background: #20ba5a;
+    color: white !important;
+}
+
+/* Hide floating widget text on small screens, make it circle-only */
+@media (max-width: 576px) {
+    .whatsapp-float-widget span {
+        display: none;
+    }
+    .whatsapp-float-widget {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        justify-content: center;
+        padding: 0;
+        bottom: 20px;
+        right: 20px;
     }
 }
