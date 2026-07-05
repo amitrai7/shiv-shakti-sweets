@@ -322,11 +322,28 @@ const PRODUCTS = [
     }
 ];
 
+// Firebase Configuration & Initialization
+const firebaseConfig = {
+  apiKey: "AIzaSyCWPyF6pf5BudSaocXDfudXkgpKQSbggP8",
+  authDomain: "shiv-shakti-sweets.firebaseapp.com",
+  projectId: "shiv-shakti-sweets",
+  storageBucket: "shiv-shakti-sweets.firebasestorage.app",
+  messagingSenderId: "867508511153",
+  appId: "1:867508511153:web:a1cc5f488ecd60f0f71d90",
+  measurementId: "G-H71F01EC35"
+};
+
+// Initialize Firebase if loaded
+if (typeof firebase !== 'undefined') {
+    firebase.initializeApp(firebaseConfig);
+    window.db = firebase.firestore();
+}
+
 // App State
 let cart = [];
 let currentCategory = "all";
 let searchQuery = "";
-let selectedProductId = 1; // Default to first product (Kaju Katli)
+let selectedProductId = 1; // Default to first product (Kesar Peda)
 let previewWeight = 0.5; // Default weight in preview pane
 let customSweets = []; // Dynamic sweets added by owner
 let defaultOverrides = {}; // Overrides for default sweets (key is ID)
@@ -362,7 +379,45 @@ document.addEventListener("DOMContentLoaded", () => {
     renderProductPreview();
     setupEventListeners();
     updateCartUI();
+    loadFirebaseData(); // Load latest menu catalog from Cloud Firestore
 });
+
+// Load custom sweets and overrides from Firebase Firestore
+function loadFirebaseData() {
+    if (typeof window.db === 'undefined') return;
+    
+    window.db.collection("settings").doc("menu").get().then((doc) => {
+        if (doc.exists) {
+            const data = doc.data();
+            let updated = false;
+            
+            if (data.customSweets && JSON.stringify(data.customSweets) !== JSON.stringify(customSweets)) {
+                customSweets = data.customSweets;
+                localStorage.setItem("shiv_shakti_custom_sweets", JSON.stringify(customSweets));
+                updated = true;
+            }
+            
+            if (data.defaultOverrides && JSON.stringify(data.defaultOverrides) !== JSON.stringify(defaultOverrides)) {
+                defaultOverrides = data.defaultOverrides;
+                localStorage.setItem("shiv_shakti_default_overrides", JSON.stringify(defaultOverrides));
+                updated = true;
+            }
+            
+            const savedOrder = localStorage.getItem("shiv_shakti_menu_order");
+            if (data.menuOrder && JSON.stringify(data.menuOrder) !== savedOrder) {
+                localStorage.setItem("shiv_shakti_menu_order", JSON.stringify(data.menuOrder));
+                updated = true;
+            }
+            
+            if (updated) {
+                renderProducts();
+                renderProductPreview();
+            }
+        }
+    }).catch((error) => {
+        console.error("Error loading menu from Firestore:", error);
+    });
+}
 
 // Load custom sweets from Local Storage
 function loadCustomSweets() {

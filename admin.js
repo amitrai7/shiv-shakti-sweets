@@ -322,6 +322,23 @@ const PRODUCTS = [
     }
 ];
 
+// Firebase Configuration & Initialization
+const firebaseConfig = {
+  apiKey: "AIzaSyCWPyF6pf5BudSaocXDfudXkgpKQSbggP8",
+  authDomain: "shiv-shakti-sweets.firebaseapp.com",
+  projectId: "shiv-shakti-sweets",
+  storageBucket: "shiv-shakti-sweets.firebasestorage.app",
+  messagingSenderId: "867508511153",
+  appId: "1:867508511153:web:a1cc5f488ecd60f0f71d90",
+  measurementId: "G-H71F01EC35"
+};
+
+// Initialize Firebase if loaded
+if (typeof firebase !== 'undefined') {
+    firebase.initializeApp(firebaseConfig);
+    window.db = firebase.firestore();
+}
+
 // Admin State
 let customSweets = [];
 let defaultOverrides = {};
@@ -333,7 +350,62 @@ document.addEventListener("DOMContentLoaded", () => {
     loadCustomSweets();
     loadDefaultOverrides();
     setupAdminListeners();
+    loadFirebaseData(); // Load latest menu catalog from Cloud Firestore
 });
+
+// Load custom sweets and overrides from Firebase Firestore
+function loadFirebaseData() {
+    if (typeof window.db === 'undefined') return;
+    
+    window.db.collection("settings").doc("menu").get().then((doc) => {
+        if (doc.exists) {
+            const data = doc.data();
+            let updated = false;
+            
+            if (data.customSweets && JSON.stringify(data.customSweets) !== JSON.stringify(customSweets)) {
+                customSweets = data.customSweets;
+                localStorage.setItem("shiv_shakti_custom_sweets", JSON.stringify(customSweets));
+                updated = true;
+            }
+            
+            if (data.defaultOverrides && JSON.stringify(data.defaultOverrides) !== JSON.stringify(defaultOverrides)) {
+                defaultOverrides = data.defaultOverrides;
+                localStorage.setItem("shiv_shakti_default_overrides", JSON.stringify(defaultOverrides));
+                updated = true;
+            }
+            
+            const savedOrder = localStorage.getItem("shiv_shakti_menu_order");
+            if (data.menuOrder && JSON.stringify(data.menuOrder) !== savedOrder) {
+                localStorage.setItem("shiv_shakti_menu_order", JSON.stringify(data.menuOrder));
+                updated = true;
+            }
+            
+            if (updated) {
+                renderAdminSweetsList();
+            }
+        }
+    }).catch((error) => {
+        console.error("Error loading menu from Firestore:", error);
+    });
+}
+
+// Save all menu customizations back to Firebase Firestore
+function saveFirebaseData() {
+    if (typeof window.db === 'undefined') return;
+    
+    const savedOrder = localStorage.getItem("shiv_shakti_menu_order");
+    const order = savedOrder ? JSON.parse(savedOrder) : [];
+    
+    window.db.collection("settings").doc("menu").set({
+        customSweets: customSweets,
+        defaultOverrides: defaultOverrides,
+        menuOrder: order
+    }).then(() => {
+        console.log("Menu successfully synced to Cloud Database!");
+    }).catch((error) => {
+        console.error("Error syncing to Cloud Database:", error);
+    });
+}
 
 // Load custom sweets from Local Storage
 function loadCustomSweets() {
@@ -347,9 +419,10 @@ function loadCustomSweets() {
     }
 }
 
-// Save custom sweets to Local Storage
+// Save custom sweets to Local Storage and sync to Cloud
 function saveCustomSweets() {
     localStorage.setItem("shiv_shakti_custom_sweets", JSON.stringify(customSweets));
+    saveFirebaseData();
 }
 
 // Load default overrides from Local Storage
@@ -364,9 +437,10 @@ function loadDefaultOverrides() {
     }
 }
 
-// Save default overrides to Local Storage
+// Save default overrides to Local Storage and sync to Cloud
 function saveDefaultOverrides() {
     localStorage.setItem("shiv_shakti_default_overrides", JSON.stringify(defaultOverrides));
+    saveFirebaseData();
 }
 
 // Get menu order (list of IDs) from Local Storage, ensuring it's in sync with current products
@@ -709,10 +783,11 @@ function resetMenuToFactoryDefault() {
 
     customSweets = [];
     defaultOverrides = {};
+    localStorage.removeItem("shiv_shakti_menu_order"); // Clear custom ordering
     
     saveCustomSweets();
     saveDefaultOverrides();
-    localStorage.removeItem("shiv_shakti_menu_order"); // Clear custom ordering
+    // saveFirebaseData is implicitly called by saveCustomSweets and saveDefaultOverrides
 
     cancelEditMode();
     renderAdminSweetsList();
@@ -736,6 +811,7 @@ window.moveSweet = (sweetId, direction) => {
     order[targetIndex] = temp;
     
     localStorage.setItem("shiv_shakti_menu_order", JSON.stringify(order));
+    saveFirebaseData(); // Sync updated ordering sequence to Cloud Firestore
     
     renderAdminSweetsList();
 };
