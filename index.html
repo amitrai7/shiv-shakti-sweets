@@ -99,6 +99,65 @@
         </div>
     </section>
 
+    <!-- Testimonials & Reviews Section -->
+    <section class="testimonials-section" id="testimonials" style="background: var(--bg-light); padding: 80px 0;">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Testimonials</span>
+                <h2 class="section-title">What Our Customers Say</h2>
+                <div class="section-divider"></div>
+            </div>
+            
+            <div class="testimonials-grid" id="testimonials-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 20px;">
+                <!-- Dynamically loaded reviews go here -->
+                <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted); background: white; border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
+                    <i class="fa-regular fa-comments" style="font-size: 2rem; margin-bottom: 10px; color: var(--primary);"></i>
+                    <p>No verified customer reviews yet. Be the first to share your experience!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Write Feedback Section -->
+    <section class="feedback-section" id="feedback" style="background: white; padding: 80px 0; border-top: 1px solid var(--border-color);">
+        <div class="container" style="max-width: 700px; margin: 0 auto; padding: 0 20px;">
+            <div class="section-header">
+                <span class="section-tag">Your Voice</span>
+                <h2 class="section-title">Leave Us Your Feedback</h2>
+                <p style="color: var(--text-muted); margin-top: 10px; text-align: center;">We love to hear about your experience with our sweets and service.</p>
+                <div class="section-divider"></div>
+            </div>
+            
+            <form id="feedback-form" style="display: flex; flex-direction: column; gap: 20px; background: var(--bg-light); padding: 40px; border-radius: var(--radius-md); box-shadow: var(--shadow-md);">
+                <div class="form-group" style="display: flex; flex-direction: column; gap: 8px;">
+                    <label for="feedback-name" style="font-weight: 600; font-size: 0.9rem; color: var(--text-dark);">Your Name *</label>
+                    <input type="text" id="feedback-name" required placeholder="Enter your full name" style="padding: 12px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); outline: none; font-size: 0.95rem; transition: var(--transition);">
+                </div>
+
+                <div class="form-group" style="display: flex; flex-direction: column; gap: 8px;">
+                    <label style="font-weight: 600; font-size: 0.9rem; color: var(--text-dark);">Your Rating *</label>
+                    <div class="star-rating-select" id="star-rating-select" style="display: flex; gap: 10px; font-size: 1.8rem; color: #ddd; cursor: pointer;">
+                        <i class="fa-solid fa-star star-btn" data-value="1"></i>
+                        <i class="fa-solid fa-star star-btn" data-value="2"></i>
+                        <i class="fa-solid fa-star star-btn" data-value="3"></i>
+                        <i class="fa-solid fa-star star-btn" data-value="4"></i>
+                        <i class="fa-solid fa-star star-btn" data-value="5"></i>
+                    </div>
+                    <input type="hidden" id="feedback-rating" value="5" required>
+                </div>
+
+                <div class="form-group" style="display: flex; flex-direction: column; gap: 8px;">
+                    <label for="feedback-comment" style="font-weight: 600; font-size: 0.9rem; color: var(--text-dark);">Your Message *</label>
+                    <textarea id="feedback-comment" required rows="4" placeholder="Share your experience (e.g. taste, packaging, delivery, service)" style="padding: 12px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); outline: none; font-size: 0.95rem; font-family: inherit; resize: vertical; transition: var(--transition);"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="feedback-submit-btn" style="margin-top: 10px; cursor: pointer; border: none; font-size: 1rem; width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-paper-plane"></i> Submit Feedback
+                </button>
+            </form>
+        </div>
+    </section>
+
     <!-- Product Preview Overlay for Mobile -->
     <div class="preview-overlay" id="preview-overlay"></div>
 

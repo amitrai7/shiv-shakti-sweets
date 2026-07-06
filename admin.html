@@ -67,6 +67,9 @@
                 <button class="admin-tab-btn" data-tab="manage-sweets" id="tab-manage-btn" style="display: flex; align-items: center; gap: 10px; text-align: left; width: 100%; padding: 10px 15px; border-radius: var(--radius-sm); font-size: 0.9rem; font-weight: 600; cursor: pointer; border: none; background: none; transition: var(--transition);">
                     <i class="fa-solid fa-sliders"></i> Manage Sweets List
                 </button>
+                <button class="admin-tab-btn" data-tab="manage-reviews" id="tab-reviews-btn" style="display: flex; align-items: center; gap: 10px; text-align: left; width: 100%; padding: 10px 15px; border-radius: var(--radius-sm); font-size: 0.9rem; font-weight: 600; cursor: pointer; border: none; background: none; transition: var(--transition);">
+                    <i class="fa-solid fa-star"></i> Customer Reviews
+                </button>
             </div>
 
             <!-- Dashboard Content Card -->
@@ -146,6 +149,43 @@
                         <button type="button" class="btn btn-danger" id="reset-menu-btn" style="font-size: 0.8rem; padding: 9px 18px; border-radius: var(--radius-sm); background: var(--accent-red); color: white; border: none; cursor: pointer;">
                             <i class="fa-solid fa-rotate-left" style="margin-right: 5px;"></i> Reset Menu to Default
                         </button>
+                    </div>
+                </div>
+
+                <!-- Tab Content: Manage Reviews -->
+                <div class="admin-tab-content" id="tab-manage-reviews" style="display: none;">
+                    <h4 style="font-size: 1.2rem; color: var(--text-dark); margin-bottom: 10px; font-weight: 600; display: flex; align-items: center; gap: 8px; font-family: var(--font-serif);">
+                        <i class="fa-solid fa-star" style="color: var(--primary);"></i> Customer Reviews & Testimonials
+                    </h4>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;">Moderate customer reviews. Approved reviews will display on the storefront website testimonials section.</p>
+                    
+                    <div id="reviews-summary-bar" style="background: var(--bg-light); border: 1px solid var(--border-color); padding: 15px 20px; border-radius: var(--radius-sm); margin-bottom: 20px; display: flex; gap: 40px; flex-wrap: wrap;">
+                        <div><span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Total Submissions</span><h3 id="reviews-count-total" style="font-size: 1.5rem; font-weight: 700; color: var(--text-dark); margin-top: 3px;">0</h3></div>
+                        <div><span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Approved Testimonials</span><h3 id="reviews-count-approved" style="font-size: 1.5rem; font-weight: 700; color: #25D366; margin-top: 3px;">0</h3></div>
+                        <div><span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Pending Review</span><h3 id="reviews-count-pending" style="font-size: 1.5rem; font-weight: 700; color: var(--accent-red); margin-top: 3px;">0</h3></div>
+                    </div>
+
+                    <div style="width: 100%; overflow-x: auto; border: 1px solid var(--border-color); border-radius: var(--radius-sm); background: white;">
+                        <table style="width: 100%; border-collapse: collapse; min-width: 600px; text-align: left; font-size: 0.85rem;">
+                            <thead>
+                                <tr style="background: var(--bg-light); border-bottom: 2px solid var(--border-color); color: var(--text-dark); font-weight: 600;">
+                                    <th style="padding: 12px 15px;">Date</th>
+                                    <th style="padding: 12px 15px;">Customer Name</th>
+                                    <th style="padding: 12px 15px;">Rating</th>
+                                    <th style="padding: 12px 15px;">Review Message</th>
+                                    <th style="padding: 12px 15px; text-align: center;">Status</th>
+                                    <th style="padding: 12px 15px; text-align: right;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-reviews-list-tbody">
+                                <tr>
+                                    <td colspan="6" style="padding: 30px; text-align: center; color: var(--text-muted);">
+                                        <i class="fa-regular fa-comments" style="font-size: 1.8rem; margin-bottom: 8px; display: block; color: var(--primary);"></i>
+                                        Loading reviews...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

@@ -343,13 +343,14 @@ if (typeof firebase !== 'undefined') {
 let cart = [];
 let currentCategory = "all";
 let searchQuery = "";
+let showAllProducts = false; // Grid collapse limit toggle
 let selectedProductId = 1; // Default to first product (Kesar Peda)
 let previewWeight = 0.5; // Default weight in preview pane
 let customSweets = []; // Dynamic sweets added by owner
 let defaultOverrides = {}; // Overrides for default sweets (key is ID)
 
 // WhatsApp Config
-const SHOP_PHONE = "919876543210"; // Shop's WhatsApp Number
+const SHOP_PHONE = "918000088059"; // Shop's WhatsApp Number
 
 // DOM Elements
 const productsGrid = document.getElementById("products-grid");
@@ -380,6 +381,8 @@ document.addEventListener("DOMContentLoaded", () => {
     setupEventListeners();
     updateCartUI();
     loadFirebaseData(); // Load latest menu catalog from Cloud Firestore
+    loadApprovedReviews(); // Load dynamic testimonials
+    initFeedbackForm(); // Setup storefront feedback submissions
 });
 
 // Load custom sweets and overrides from Firebase Firestore
@@ -547,8 +550,12 @@ function renderProducts() {
         return;
     }
 
+    const limit = 8;
+    const shouldLimit = filtered.length > limit;
+    const itemsToRender = (shouldLimit && !showAllProducts) ? filtered.slice(0, limit) : filtered;
+
     // Build grid elements
-    filtered.forEach(product => {
+    itemsToRender.forEach(product => {
         const card = document.createElement("div");
         card.className = `product-card${product.id === selectedProductId ? ' active' : ''}`;
         
@@ -574,6 +581,64 @@ function renderProducts() {
 
         productsGrid.appendChild(card);
     });
+
+    // Append "Show More" / "Show Less" toggle button if we exceed the limit
+    if (shouldLimit) {
+        const btnContainer = document.createElement("div");
+        btnContainer.style.gridColumn = "1 / -1";
+        btnContainer.style.display = "flex";
+        btnContainer.style.justifyContent = "center";
+        btnContainer.style.marginTop = "30px";
+        btnContainer.style.marginBottom = "15px";
+        btnContainer.style.width = "100%";
+
+        const toggleBtn = document.createElement("button");
+        toggleBtn.className = "btn";
+        toggleBtn.style.border = "2px solid var(--primary)";
+        toggleBtn.style.color = "var(--primary)";
+        toggleBtn.style.background = "transparent";
+        toggleBtn.style.display = "inline-flex";
+        toggleBtn.style.alignItems = "center";
+        toggleBtn.style.gap = "8px";
+        toggleBtn.style.cursor = "pointer";
+        toggleBtn.style.transition = "all 0.3s ease";
+        toggleBtn.style.padding = "12px 28px";
+        toggleBtn.style.borderRadius = "30px";
+
+        // Add hover effects via JS
+        toggleBtn.addEventListener("mouseenter", () => {
+            toggleBtn.style.background = "var(--primary)";
+            toggleBtn.style.color = "white";
+            toggleBtn.style.transform = "translateY(-2px)";
+        });
+        toggleBtn.addEventListener("mouseleave", () => {
+            toggleBtn.style.background = "transparent";
+            toggleBtn.style.color = "var(--primary)";
+            toggleBtn.style.transform = "translateY(0)";
+        });
+
+        if (showAllProducts) {
+            toggleBtn.innerHTML = `Show Less Sweets <i class="fa-solid fa-chevron-up"></i>`;
+        } else {
+            toggleBtn.innerHTML = `Show More Sweets (${filtered.length - limit} more) <i class="fa-solid fa-chevron-down"></i>`;
+        }
+
+        toggleBtn.addEventListener("click", () => {
+            showAllProducts = !showAllProducts;
+            renderProducts();
+            
+            // If they collapse it, scroll smoothly back to the top of the menu grid so they aren't disoriented
+            if (!showAllProducts) {
+                const target = document.getElementById("category-filters") || document.getElementById("shop-layout");
+                if (target) {
+                    target.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+            }
+        });
+
+        btnContainer.appendChild(toggleBtn);
+        productsGrid.appendChild(btnContainer);
+    }
 }
 
 // Select product and open preview
@@ -663,11 +728,22 @@ function renderProductPreview() {
         productPreviewPane.innerHTML = `
             <div class="preview-empty-state">
                 <i class="fa-solid fa-cookie-bite preview-empty-icon"></i>
-                <p>Select a sweet to view details, ingredients, and nutritional specifications.</p>
+                <p>Select a sweet to view detailed specifications and send queries.</p>
             </div>
         `;
         return;
     }
+
+    const step = (product.unit && product.unit.toLowerCase() === 'packet') ? 1.0 : 0.5;
+    
+    // Set default value based on unit if it was not adjusted yet or is invalid for the unit
+    if (step === 1.0 && previewWeight % 1 !== 0) {
+        previewWeight = 1.0;
+    } else if (step === 0.5 && previewWeight < 0.5) {
+        previewWeight = 0.5;
+    }
+
+    const totalPrice = product.price * previewWeight;
 
     productPreviewPane.innerHTML = `
         <button class="preview-close-btn" id="close-preview" aria-label="Close Preview">
@@ -677,71 +753,44 @@ function renderProductPreview() {
             <img src="${product.image}" alt="${product.title}" class="preview-img">
             ${product.badge ? `<span class="preview-badge">${product.badge}</span>` : ''}
         </div>
-        <div class="preview-content preview-fade-in">
+        <div class="preview-content preview-fade-in" style="padding-bottom: 10px;">
             <div class="preview-meta">
                 <span class="preview-category">${product.category.replace("-", " ")}</span>
-                <h3 class="preview-title">${product.title}</h3>
-                <div class="preview-rating-row">
-                    <div class="preview-stars">
-                        ${getRatingStars(product.rating)}
-                    </div>
-                    <span>${product.rating.toFixed(1)} (${product.reviews} reviews)</span>
-                </div>
+                <h3 class="preview-title" style="margin-bottom: 10px;">${product.title}</h3>
             </div>
 
-            <div class="preview-price-row">
+            <div class="preview-price-row" style="margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px;">
                 <span class="preview-price">₹${product.price} <span class="preview-price-unit">/ ${product.unit}</span></span>
             </div>
 
-            <p class="preview-desc">${product.description}</p>
-
-            <div class="preview-tags">
-                ${product.dietary.map(tag => {
-                    let tagClass = "veg";
-                    let icon = "fa-leaf";
-                    if (tag.toLowerCase().includes("nut")) { tagClass = "nuts"; icon = "fa-cubes"; }
-                    else if (tag.toLowerCase().includes("gluten")) { tagClass = "gluten-free"; icon = "fa-wheat-awn-circle-exclamation"; }
-                    else if (tag.toLowerCase().includes("dairy")) { tagClass = "dairy"; icon = "fa-glass-water"; }
-                    else if (tag.toLowerCase().includes("sugar")) { tagClass = "sugar-free"; icon = "fa-check"; }
-                    else if (tag.toLowerCase().includes("ghee")) { tagClass = "nuts"; icon = "fa-bowl-food"; }
-                    return `<span class="dietary-tag ${tagClass}"><i class="fa-solid ${icon}"></i> ${tag}</span>`;
-                }).join("")}
-            </div>
-
-            <div>
-                <h4 class="preview-section-title">Ingredients</h4>
-                <ul class="preview-ingredients-list">
-                    ${product.ingredients.map(ing => `<li>${ing}</li>`).join("")}
-                </ul>
-            </div>
-
-            <div>
-                <h4 class="preview-section-title">Details</h4>
-                <div class="preview-info-row">
-                    <span class="preview-info-label">Shelf Life</span>
-                    <span class="preview-info-value">${product.shelfLife}</span>
-                </div>
-                <div class="preview-info-row">
-                    <span class="preview-info-label">Calories</span>
-                    <span class="preview-info-value">${product.nutrition.calories}</span>
-                </div>
-                <div class="preview-info-row">
-                    <span class="preview-info-label">Fat / Sugar</span>
-                    <span class="preview-info-value">${product.nutrition.fat} fat, ${product.nutrition.sugar} sugar</span>
+            <p class="preview-desc" style="line-height: 1.6; color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px;">${product.description}</p>
+            
+            <div style="border-top: 1px solid var(--border-color); padding-top: 20px;">
+                <h4 style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px;">Choose Quantity</h4>
+                <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+                    <div style="display: flex; align-items: center; border: 1px solid var(--border-color); border-radius: var(--radius-sm); background: white;">
+                        <button class="qty-btn" id="preview-qty-minus" style="padding: 10px 14px; background: none; border: none; cursor: pointer; color: var(--text-dark); transition: var(--transition);"><i class="fa-solid fa-minus" style="font-size: 0.75rem;"></i></button>
+                        <span id="preview-qty-val" style="font-weight: 700; color: var(--text-dark); min-width: 70px; text-align: center; font-size: 0.95rem;">${previewWeight} ${product.unit}</span>
+                        <button class="qty-btn" id="preview-qty-plus" style="padding: 10px 14px; background: none; border: none; cursor: pointer; color: var(--text-dark); transition: var(--transition);"><i class="fa-solid fa-plus" style="font-size: 0.75rem;"></i></button>
+                    </div>
+                    <div style="display: flex; flex-direction: column;">
+                        <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Estimated Total</span>
+                        <span id="preview-total-price" style="font-size: 1.2rem; font-weight: 700; color: var(--primary);">₹${totalPrice.toFixed(0)}</span>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="preview-actions">
-            <div class="in-store-notice">
-                <i class="fa-solid fa-store"></i>
+        <div class="preview-actions" style="margin-top: 10px;">
+            <button class="preview-add-btn" id="preview-inquire-btn" style="text-align: center; display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; cursor: pointer; border: none;">
+                <i class="fa-brands fa-whatsapp" style="font-size: 1.2rem;"></i> Inquire on WhatsApp
+            </button>
+            <div class="in-store-notice" style="margin-top: 15px; margin-bottom: 0;">
+                <i class="fa-solid fa-store" style="color: var(--primary); font-size: 1.2rem;"></i>
                 <div>
-                    <strong>Available In-Store Only</strong>
-                    <p>Visit our shop in Kopar Khairane to purchase fresh sweets.</p>
+                    <strong style="display: block; font-size: 0.85rem; color: var(--text-dark);">Available In-Store Only</strong>
+                    <span style="font-size: 0.75rem; color: var(--text-muted);">Please visit our shop in Ankleshwar to purchase.</span>
                 </div>
             </div>
-            <a href="#contact" class="preview-add-btn" id="preview-location-btn" style="text-align: center;">
-                <i class="fa-solid fa-map-location-dot"></i> View Shop Location
-            </a>
         </div>
     `;
 
@@ -751,14 +800,42 @@ function renderProductPreview() {
         closePreviewBtn.addEventListener("click", () => togglePreviewDrawer(false));
     }
 
-    const locationBtn = document.getElementById("preview-location-btn");
-    if (locationBtn) {
-        locationBtn.addEventListener("click", () => {
-            // Close mobile drawer if on mobile
-            if (window.innerWidth <= 992) {
-                togglePreviewDrawer(false);
+    const qtyMinus = document.getElementById("preview-qty-minus");
+    const qtyPlus = document.getElementById("preview-qty-plus");
+    const qtyVal = document.getElementById("preview-qty-val");
+    const totalPriceEl = document.getElementById("preview-total-price");
+    const inquireBtn = document.getElementById("preview-inquire-btn");
+
+    if (qtyMinus && qtyPlus && qtyVal && totalPriceEl) {
+        qtyMinus.addEventListener("click", () => {
+            if (previewWeight > step) {
+                previewWeight -= step;
+                updatePreviewQuantityDisplay(product, step);
             }
         });
+
+        qtyPlus.addEventListener("click", () => {
+            previewWeight += step;
+            updatePreviewQuantityDisplay(product, step);
+        });
+    }
+
+    if (inquireBtn) {
+        inquireBtn.addEventListener("click", () => {
+            const message = `Hello Shiv Shakti Sweets, I would like to inquire about purchasing ${previewWeight.toFixed(step === 0.5 ? 1 : 0)} ${product.unit} of ${product.title}. Is it available at your shop today?`;
+            const encoded = encodeURIComponent(message);
+            window.open(`https://wa.me/${SHOP_PHONE}?text=${encoded}`, "_blank");
+        });
+    }
+}
+
+function updatePreviewQuantityDisplay(product, step) {
+    const qtyVal = document.getElementById("preview-qty-val");
+    const totalPriceEl = document.getElementById("preview-total-price");
+    
+    if (qtyVal && totalPriceEl) {
+        qtyVal.textContent = `${previewWeight.toFixed(step === 0.5 ? 1 : 0)} ${product.unit}`;
+        totalPriceEl.textContent = `₹${(product.price * previewWeight).toFixed(0)}`;
     }
 }
 
@@ -995,6 +1072,7 @@ function setupEventListeners() {
             filterButtons.forEach(b => b.classList.remove("active"));
             btn.classList.add("active");
             currentCategory = btn.getAttribute("data-category");
+            showAllProducts = false; // Reset view to collapsed on category switch
             renderProducts();
         });
     });
@@ -1002,7 +1080,172 @@ function setupEventListeners() {
     // Search Input
     searchInput.addEventListener("input", (e) => {
         searchQuery = e.target.value;
+        showAllProducts = false; // Reset view to collapsed on search input
         renderProducts();
+    });
+}
+
+// Fetch and render approved customer reviews from Firestore
+function loadApprovedReviews() {
+    if (typeof window.db === 'undefined') return;
+    
+    window.db.collection("feedback")
+        .orderBy("timestamp", "desc")
+        .limit(50)
+        .onSnapshot((querySnapshot) => {
+            const grid = document.getElementById("testimonials-grid");
+            if (!grid) return;
+            
+            // Filter approved reviews client-side to bypass custom composite index requirements
+            const approvedReviews = [];
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                if (data.approved === true) {
+                    approvedReviews.push(data);
+                }
+            });
+            
+            if (approvedReviews.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted); background: white; border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
+                        <i class="fa-regular fa-comments" style="font-size: 2rem; margin-bottom: 10px; color: var(--primary);"></i>
+                        <p>No verified customer reviews yet. Be the first to share your experience!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            grid.innerHTML = "";
+            // Render up to 6 latest approved reviews
+            approvedReviews.slice(0, 6).forEach((review) => {
+                const dateStr = new Date(review.timestamp).toLocaleDateString("en-IN", {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric'
+                });
+                
+                // Generate stars HTML
+                let starsHtml = "";
+                for (let i = 1; i <= 5; i++) {
+                    if (i <= review.rating) {
+                        starsHtml += `<i class="fa-solid fa-star"></i>`;
+                    } else {
+                        starsHtml += `<i class="fa-regular fa-star" style="color: #ddd;"></i>`;
+                    }
+                }
+                
+                const initial = review.name ? review.name.trim().charAt(0).toUpperCase() : "C";
+                
+                const card = document.createElement("div");
+                card.className = "testimonial-card";
+                card.innerHTML = `
+                    <div class="testimonial-header">
+                        <div class="testimonial-user">
+                            <div class="testimonial-avatar">${initial}</div>
+                            <div>
+                                <h4 class="testimonial-name">${review.name}</h4>
+                                <span class="testimonial-date">${dateStr}</span>
+                            </div>
+                        </div>
+                        <div class="testimonial-stars">${starsHtml}</div>
+                    </div>
+                    <p class="testimonial-comment">"${review.comment}"</p>
+                `;
+                grid.appendChild(card);
+            });
+        }, (error) => {
+            console.error("Error loading testimonials:", error);
+        });
+}
+
+let selectedFeedbackRating = 5;
+
+// Initialize storefront feedback submission form
+function initFeedbackForm() {
+    const form = document.getElementById("feedback-form");
+    const starsSelect = document.getElementById("star-rating-select");
+    const ratingInput = document.getElementById("feedback-rating");
+    
+    if (starsSelect && ratingInput) {
+        const stars = starsSelect.querySelectorAll(".star-btn");
+        
+        // Initial star display
+        updateStarDisplay(stars, selectedFeedbackRating);
+        
+        // Use robust event delegation on the parent container
+        starsSelect.addEventListener("click", (e) => {
+            const star = e.target.closest(".star-btn");
+            if (!star) return;
+            
+            selectedFeedbackRating = parseInt(star.getAttribute("data-value"));
+            ratingInput.value = selectedFeedbackRating;
+            updateStarDisplay(stars, selectedFeedbackRating);
+        });
+    }
+    
+    if (form) {
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            
+            const nameInput = document.getElementById("feedback-name");
+            const commentInput = document.getElementById("feedback-comment");
+            const submitBtn = document.getElementById("feedback-submit-btn");
+            
+            const name = nameInput.value.trim();
+            const rating = parseInt(ratingInput.value);
+            const comment = commentInput.value.trim();
+            
+            if (!name || !rating || !comment) {
+                alert("Please fill in all fields.");
+                return;
+            }
+            
+            if (typeof window.db === 'undefined') {
+                alert("Database connection is not initialized. Please try again later.");
+                return;
+            }
+            
+            const originalText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="margin-right: 5px;"></i> Submitting...`;
+            
+            window.db.collection("feedback").add({
+                name: name,
+                rating: rating,
+                comment: comment,
+                timestamp: Date.now(),
+                approved: false // Moderated default status
+            }).then(() => {
+                alert("Thank you! Your feedback has been submitted successfully and will show up on the website after owner approval.");
+                form.reset();
+                selectedFeedbackRating = 5;
+                if (ratingInput) ratingInput.value = 5;
+                if (starsSelect) {
+                    const stars = starsSelect.querySelectorAll(".star-btn");
+                    updateStarDisplay(stars, 5);
+                }
+            }).catch((error) => {
+                console.error("Error submitting feedback:", error);
+                alert("Error submitting feedback: " + error.message);
+            }).finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            });
+        });
+    }
+}
+
+// Update storefront interactive star selected styling
+function updateStarDisplay(starsList, ratingValue) {
+    starsList.forEach(star => {
+        const val = parseInt(star.getAttribute("data-value"));
+        if (val <= ratingValue) {
+            star.classList.add("active");
+            star.style.setProperty("color", "#fbbf24", "important");
+        } else {
+            star.classList.remove("active");
+            star.style.setProperty("color", "#ddd", "important");
+        }
     });
 }
 

@@ -553,9 +553,12 @@ function setupAdminListeners() {
             const tabId = btn.getAttribute("data-tab");
             document.getElementById("tab-add-sweet").style.display = tabId === "add-sweet" ? "block" : "none";
             document.getElementById("tab-manage-sweets").style.display = tabId === "manage-sweets" ? "block" : "none";
+            document.getElementById("tab-manage-reviews").style.display = tabId === "manage-reviews" ? "block" : "none";
             
             if (tabId === "manage-sweets") {
                 renderAdminSweetsList();
+            } else if (tabId === "manage-reviews") {
+                loadAdminReviews();
             }
         });
     });
@@ -939,3 +942,119 @@ function renderAdminSweetsList() {
         listContainer.appendChild(item);
     });
 }
+
+// Fetch reviews list, update stats headers, and render table rows
+function loadAdminReviews() {
+    if (typeof window.db === 'undefined') return;
+    
+    window.db.collection("feedback")
+        .orderBy("timestamp", "desc")
+        .onSnapshot((querySnapshot) => {
+            const tbody = document.getElementById("admin-reviews-list-tbody");
+            if (!tbody) return;
+            
+            let total = 0;
+            let approved = 0;
+            let pending = 0;
+            
+            if (querySnapshot.empty) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="padding: 30px; text-align: center; color: var(--text-muted);">
+                            <i class="fa-regular fa-comments" style="font-size: 1.8rem; margin-bottom: 8px; display: block; color: var(--primary);"></i>
+                            No reviews found.
+                        </td>
+                    </tr>
+                `;
+                document.getElementById("reviews-count-total").textContent = "0";
+                document.getElementById("reviews-count-approved").textContent = "0";
+                document.getElementById("reviews-count-pending").textContent = "0";
+                return;
+            }
+            
+            tbody.innerHTML = "";
+            querySnapshot.forEach((doc) => {
+                const review = doc.data();
+                const docId = doc.id;
+                
+                total++;
+                if (review.approved) approved++;
+                else pending++;
+                
+                const dateStr = new Date(review.timestamp).toLocaleDateString("en-IN", {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                // Stars HTML
+                let starsHtml = "";
+                for (let i = 1; i <= 5; i++) {
+                    if (i <= review.rating) {
+                        starsHtml += `<i class="fa-solid fa-star" style="color: #fbbf24; margin-right: 2px;"></i>`;
+                    } else {
+                        starsHtml += `<i class="fa-regular fa-star" style="color: #ddd; margin-right: 2px;"></i>`;
+                    }
+                }
+                
+                const statusBadge = review.approved 
+                    ? `<span class="status-badge approved">Approved</span>`
+                    : `<span class="status-badge pending">Pending</span>`;
+                    
+                const actionBtn = review.approved
+                    ? `<button class="admin-action-btn reject-btn" onclick="toggleReviewApproval('${docId}', true)"><i class="fa-solid fa-ban"></i> Reject</button>`
+                    : `<button class="admin-action-btn approve-btn" onclick="toggleReviewApproval('${docId}', false)"><i class="fa-solid fa-check"></i> Approve</button>`;
+                
+                const row = document.createElement("tr");
+                row.style.borderBottom = "1px solid var(--border-color)";
+                row.innerHTML = `
+                    <td style="padding: 12px 15px; color: var(--text-muted); font-size: 0.8rem; white-space: nowrap;">${dateStr}</td>
+                    <td style="padding: 12px 15px; font-weight: 600; color: var(--text-dark);">${review.name}</td>
+                    <td style="padding: 12px 15px; white-space: nowrap;">${starsHtml}</td>
+                    <td style="padding: 12px 15px; max-width: 300px; word-wrap: break-word; color: var(--text-muted);">${review.comment}</td>
+                    <td style="padding: 12px 15px; text-align: center;">${statusBadge}</td>
+                    <td style="padding: 12px 15px; text-align: right; white-space: nowrap; display: flex; gap: 6px; justify-content: flex-end; align-items: center; min-height: 48px;">
+                        ${actionBtn}
+                        <button class="admin-action-btn delete-btn" onclick="deleteReview('${docId}')" aria-label="Delete Review"><i class="fa-solid fa-trash-can"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+            
+            document.getElementById("reviews-count-total").textContent = total;
+            document.getElementById("reviews-count-approved").textContent = approved;
+            document.getElementById("reviews-count-pending").textContent = pending;
+        }, (error) => {
+            console.error("Error loading reviews for admin:", error);
+        });
+}
+
+// Toggle review approval status
+window.toggleReviewApproval = (docId, currentStatus) => {
+    if (typeof window.db === 'undefined') return;
+    
+    window.db.collection("feedback").doc(docId).update({
+        approved: !currentStatus
+    }).then(() => {
+        console.log(`Review ${docId} approval status updated to ${!currentStatus}`);
+    }).catch((error) => {
+        console.error("Error updating review status:", error);
+        alert("Error updating review status: " + error.message);
+    });
+};
+
+// Delete review from database
+window.deleteReview = (docId) => {
+    if (typeof window.db === 'undefined') return;
+    
+    if (confirm("Are you sure you want to permanently delete this customer review? This action cannot be undone.")) {
+        window.db.collection("feedback").doc(docId).delete().then(() => {
+            console.log(`Review ${docId} deleted successfully.`);
+        }).catch((error) => {
+            console.error("Error deleting review:", error);
+            alert("Error deleting review: " + error.message);
+        });
+    }
+};
