@@ -587,6 +587,7 @@ function compressImage(file, callback, errorCallback) {
             }
         };
     };
+    reader.readAsDataURL(file);
 }
 
     // Handle Image Upload File Selection with Compression and Error Handling
