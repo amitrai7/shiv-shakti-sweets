@@ -396,14 +396,32 @@ function saveFirebaseData() {
     const savedOrder = localStorage.getItem("shiv_shakti_menu_order");
     const order = savedOrder ? JSON.parse(savedOrder) : [];
     
+    // Disable submit buttons to prevent double-saving or edits during syncing
+    const saveBtn = document.getElementById("save-sweet-btn");
+    let originalText = "";
+    if (saveBtn) {
+        saveBtn.disabled = true;
+        originalText = saveBtn.innerHTML;
+        saveBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="margin-right: 5px;"></i> Syncing to Cloud...`;
+    }
+    
     window.db.collection("settings").doc("menu").set({
         customSweets: customSweets,
         defaultOverrides: defaultOverrides,
         menuOrder: order
     }).then(() => {
         console.log("Menu successfully synced to Cloud Database!");
+        if (saveBtn) {
+            saveBtn.disabled = false;
+            saveBtn.innerHTML = originalText;
+        }
     }).catch((error) => {
         console.error("Error syncing to Cloud Database:", error);
+        alert("Error syncing to Cloud Database: " + error.message + "\n\nThis usually happens if your total image payload size exceeds Firestore's 1MB limit. Please try clicking 'Reset Menu to Default' to clear old large images, then re-upload them using the new compressed uploader.");
+        if (saveBtn) {
+            saveBtn.disabled = false;
+            saveBtn.innerHTML = originalText;
+        }
     });
 }
 
