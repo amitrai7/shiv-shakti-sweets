@@ -734,7 +734,7 @@ function renderProductPreview() {
         return;
     }
 
-    const step = (product.unit && product.unit.toLowerCase() === 'packet') ? 1.0 : 0.5;
+    const step = (product.unit && product.unit.toLowerCase() === 'kg') ? 0.5 : 1.0;
     
     // Set default value based on unit if it was not adjusted yet or is invalid for the unit
     if (step === 1.0 && previewWeight % 1 !== 0) {

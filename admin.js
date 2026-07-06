@@ -683,6 +683,7 @@ function saveNewCustomSweet() {
     const nameInput = document.getElementById("sweet-name");
     const categorySelect = document.getElementById("sweet-category");
     const priceInput = document.getElementById("sweet-price");
+    const unitSelect = document.getElementById("sweet-unit");
     const badgeInput = document.getElementById("sweet-badge");
     const descInput = document.getElementById("sweet-desc");
     
@@ -691,7 +692,7 @@ function saveNewCustomSweet() {
         title: nameInput.value,
         category: categorySelect.value,
         price: parseFloat(priceInput.value),
-        unit: "kg",
+        unit: unitSelect.value,
         description: descInput.value,
         image: sweetImageBase64 || getDefaultCategoryImg(categorySelect.value),
         badge: badgeInput.value,
@@ -728,6 +729,7 @@ window.startEditSweet = (productId) => {
     document.getElementById("sweet-name").value = sweet.title;
     document.getElementById("sweet-category").value = sweet.category;
     document.getElementById("sweet-price").value = sweet.price;
+    document.getElementById("sweet-unit").value = sweet.unit || "kg";
     document.getElementById("sweet-badge").value = sweet.badge || "";
     document.getElementById("sweet-desc").value = sweet.description;
     document.getElementById("file-name-display").textContent = "Using current image...";
@@ -773,6 +775,7 @@ function updateExistingSweet() {
     const nameInput = document.getElementById("sweet-name").value;
     const categorySelect = document.getElementById("sweet-category").value;
     const priceInput = parseFloat(document.getElementById("sweet-price").value);
+    const unitInput = document.getElementById("sweet-unit").value;
     const badgeInput = document.getElementById("sweet-badge").value;
     const descInput = document.getElementById("sweet-desc").value;
 
@@ -785,6 +788,7 @@ function updateExistingSweet() {
             customSweets[sweetIndex].title = nameInput;
             customSweets[sweetIndex].category = categorySelect;
             customSweets[sweetIndex].price = priceInput;
+            customSweets[sweetIndex].unit = unitInput;
             customSweets[sweetIndex].badge = badgeInput;
             customSweets[sweetIndex].description = descInput;
             if (sweetImageBase64) {
@@ -801,6 +805,7 @@ function updateExistingSweet() {
         defaultOverrides[editingProductId].title = nameInput;
         defaultOverrides[editingProductId].category = categorySelect;
         defaultOverrides[editingProductId].price = priceInput;
+        defaultOverrides[editingProductId].unit = unitInput;
         defaultOverrides[editingProductId].badge = badgeInput;
         defaultOverrides[editingProductId].description = descInput;
         if (sweetImageBase64) {

@@ -98,10 +98,20 @@
                             </div>
                         </div>
 
-                        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
                             <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
-                                <label for="sweet-price" style="font-size: 0.85rem; font-weight: 600; color: var(--text-dark);">Price (₹ per kg) *</label>
+                                <label for="sweet-price" style="font-size: 0.85rem; font-weight: 600; color: var(--text-dark);">Price (₹) *</label>
                                 <input type="number" id="sweet-price" min="0" required style="padding: 11px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-size: 0.9rem; outline: none; transition: var(--transition);" placeholder="e.g. 320">
+                            </div>
+                            <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                                <label for="sweet-unit" style="font-size: 0.85rem; font-weight: 600; color: var(--text-dark);">Unit *</label>
+                                <select id="sweet-unit" required style="padding: 11px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-size: 0.9rem; outline: none; background: white; transition: var(--transition);">
+                                    <option value="kg">kg (Kilogram)</option>
+                                    <option value="pc">pc (Piece)</option>
+                                    <option value="packet">packet</option>
+                                    <option value="plate">plate</option>
+                                    <option value="box">box</option>
+                                </select>
                             </div>
                             <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
                                 <label for="sweet-badge" style="font-size: 0.85rem; font-weight: 600; color: var(--text-dark);">Badge (Optional)</label>
