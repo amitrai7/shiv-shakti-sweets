@@ -542,19 +542,71 @@ function setupAdminListeners() {
         });
     });
 
-    // Handle Image Upload File Selection
+// Compress image to fit within database storage limits (Max 500px, JPEG quality 0.7) with error handling
+function compressImage(file, callback, errorCallback) {
+    const reader = new FileReader();
+    reader.onerror = () => {
+        if (errorCallback) errorCallback();
+    };
+    reader.onload = (event) => {
+        const img = new Image();
+        img.onerror = () => {
+            if (errorCallback) errorCallback();
+        };
+        img.src = event.target.result;
+        img.onload = () => {
+            try {
+                const canvas = document.createElement("canvas");
+                const MAX_WIDTH = 500;
+                const MAX_HEIGHT = 500;
+                let width = img.width;
+                let height = img.height;
+                
+                if (width > height) {
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
+                } else {
+                    if (height > MAX_HEIGHT) {
+                        width *= MAX_HEIGHT / height;
+                        height = MAX_HEIGHT;
+                    }
+                }
+                
+                canvas.width = width;
+                canvas.height = height;
+                
+                const ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                const compressedBase64 = canvas.toDataURL("image/jpeg", 0.7);
+                callback(compressedBase64);
+            } catch (e) {
+                if (errorCallback) errorCallback(e);
+            }
+        };
+    };
+}
+
+    // Handle Image Upload File Selection with Compression and Error Handling
     const fileInput = document.getElementById("sweet-image");
     const fileNameDisplay = document.getElementById("file-name-display");
     if (fileInput) {
         fileInput.addEventListener("change", (e) => {
             const file = e.target.files[0];
             if (file) {
-                fileNameDisplay.textContent = file.name;
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    sweetImageBase64 = event.target.result;
-                };
-                reader.readAsDataURL(file);
+                fileNameDisplay.textContent = "Compressing image...";
+                compressImage(file, (compressedBase64) => {
+                    sweetImageBase64 = compressedBase64;
+                    fileNameDisplay.textContent = `${file.name} (Ready)`;
+                }, (err) => {
+                    console.error("Compression error:", err);
+                    alert("Unable to upload this file type. Please make sure you are selecting a standard image file (JPG, PNG, or WebP) instead of iPhone HEIC/RAW files.");
+                    fileNameDisplay.textContent = "Upload failed. Use JPG/PNG.";
+                    fileInput.value = ""; // Clear file
+                    sweetImageBase64 = "";
+                });
             } else {
                 fileNameDisplay.textContent = editingProductId ? "Using current image..." : "No file chosen";
                 sweetImageBase64 = "";
@@ -600,6 +652,7 @@ function verifyAdminPassword() {
 function getDefaultCategoryImg(category) {
     if (category === "ladoo") return "assets/motichoor.jpg";
     if (category === "bengali") return "assets/gulab-jamun.jpg";
+    if (category === "snacks") return "assets/kaju-katli.jpg";
     return "assets/kaju-katli.jpg";
 }
 
